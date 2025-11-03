@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Number Guessing Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-container">
+    <h1>Number Guessing Game</h1>
+    <p class="subtitle">Pick a range, then try to guess the secret number!</p>
+
+    <!-- Setup section -->
+    <div class="setup">
+      <label for="max-number">Choose the top of the range:</label>
+      <input id="max-number" type="number" min="1" placeholder="e.g. 100">
+      <button id="start-game" class="btn primary">Start Game</button>
+      <p id="setup-message" class="message"></p>
+    </div>
+
+    <!-- Play area -->
+    <div class="play hidden" id="play-area">
+      <p class="range-text">
+        I'm thinking of a number between 0 and <span id="range-display"></span>.
+      </p>
+
+      <div class="stats-row">
+        <p>Attempts: <span id="guess-count">0</span></p>
+        <p>Last result: <span id="feedback" class="message"></span></p>
+      </div>
+
+      <label for="guess-input">Make a guess:</label>
+      <input id="guess-input" type="number" autocomplete="off">
+
+      <div class="button-row">
+        <button id="submit-guess" class="btn success">Guess</button>
+        <button id="play-again" class="btn secondary hidden">Play Again</button>
+      </div>
+
+      <p id="hint" class="hint-text"></p>
+
+      <div class="previous-wrapper">
+        <h2>Previous guesses</h2>
+        <p id="previous-guesses" class="previous-list">None yet – be the first 😄</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
