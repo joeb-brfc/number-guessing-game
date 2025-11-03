@@ -1,48 +1,192 @@
+/* Overall page */
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  margin: 0;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4 40%, #a1c4fd, #c2e9fb);
 }
 
+/* Card container */
 .game-container {
-  background: white;
-  padding: 20px 25px;
-  border-radius: 8px;
-  max-width: 400px;
-  width: 100%;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 24px 28px;
+  border-radius: 16px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  backdrop-filter: blur(6px);
 }
 
 h1 {
+  margin: 0;
   text-align: center;
-  margin-top: 0;
+  font-size: 1.8rem;
 }
 
+.subtitle {
+  text-align: center;
+  margin-top: 6px;
+  margin-bottom: 18px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Layout bits */
+.setup,
+.play {
+  margin-top: 10px;
+}
+
+.range-text {
+  font-weight: 500;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin: 8px 0 12px;
+}
+
+/* Inputs */
 label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
+  font-weight: 500;
 }
 
 input[type="number"] {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
   box-sizing: border-box;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
-button {
-  padding: 8px 12px;
+input[type="number"]:focus {
+  outline: none;
+  border-color: #4c6fff;
+  box-shadow: 0 0 0 3px rgba(76, 111, 255, 0.25);
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 0.95rem;
   cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
+.btn.primary {
+  background: linear-gradient(135deg, #4c6fff, #7c3aed);
+  color: white;
+  box-shadow: 0 4px 10px rgba(76, 111, 255, 0.4);
+}
+
+.btn.success {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.4);
+}
+
+.btn.secondary {
+  background: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Button row */
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* Messages / feedback */
 .message {
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+/* Colours for states */
+.feedback-correct {
+  color: #16a34a;
+  animation: pop 0.35s ease-out;
+}
+
+.feedback-high,
+.feedback-low {
+  color: #ea580c;
+  animation: shake 0.35s ease-out;
+}
+
+.feedback-error {
+  color: #b91c1c;
+}
+
+/* Hint text */
+.hint-text {
+  font-size: 0.9rem;
+  color: #6b7280;
   margin-top: 8px;
 }
 
+/* Previous guesses */
+.previous-wrapper {
+  margin-top: 14px;
+}
+
+.previous-wrapper h2 {
+  font-size: 1rem;
+  margin: 0 0 4px;
+}
+
+.previous-list {
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+/* Helpers */
 .hidden {
   display: none;
+}
+
+/* Animations */
+@keyframes pop {
+  0% { transform: scale(0.9); }
+  70% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+  100% { transform: translateX(0); }
 }
