@@ -1,6 +1,7 @@
 let topOfRange = null;
 let randomNumber = null;
 let guesses = 0;
+let previousGuesses = [];
 
 const maxInput = document.getElementById("max-number");
 const startBtn = document.getElementById("start-game");
@@ -10,12 +11,28 @@ const playArea = document.getElementById("play-area");
 const rangeDisplay = document.getElementById("range-display");
 const guessInput = document.getElementById("guess-input");
 const guessBtn = document.getElementById("submit-guess");
+const playAgainBtn = document.getElementById("play-again");
+
 const feedback = document.getElementById("feedback");
 const guessCount = document.getElementById("guess-count");
+const hint = document.getElementById("hint");
+const previousGuessesEl = document.getElementById("previous-guesses");
 
-// Start game: validate top-of-range and generate random number
-startBtn.addEventListener("click", () => {
+// Utility: clear feedback classes
+function clearFeedbackClasses() {
+  feedback.classList.remove("feedback-correct", "feedback-high", "feedback-low", "feedback-error");
+}
+
+// Start / reset game
+function startGame() {
   const value = maxInput.value.trim();
+
+  clearFeedbackClasses();
+  setupMessage.textContent = "";
+  feedback.textContent = "";
+  hint.textContent = "";
+  previousGuesses = [];
+  previousGuessesEl.textContent = "None yet – be the first 😄";
 
   if (!value || isNaN(value)) {
     setupMessage.textContent = "Please type a number next time.";
@@ -29,42 +46,76 @@ startBtn.addEventListener("click", () => {
     return;
   }
 
-  // Valid input – start the game
-  randomNumber = Math.floor(Math.random() * (topOfRange + 1)); // 0 to topOfRange
+  // Generate new random number
+  randomNumber = Math.floor(Math.random() * (topOfRange + 1));
   guesses = 0;
-  setupMessage.textContent = "";
+  guessCount.textContent = guesses;
   rangeDisplay.textContent = topOfRange;
-  feedback.textContent = "";
-  guessCount.textContent = "";
-  guessInput.value = "";
 
   playArea.classList.remove("hidden");
-  guessInput.focus();
-});
+  playAgainBtn.classList.add("hidden");
 
-// Handle guesses
-guessBtn.addEventListener("click", () => {
+  guessInput.disabled = false;
+  guessBtn.disabled = false;
+  guessInput.value = "";
+  guessInput.focus();
+}
+
+// Handle a guess
+function handleGuess() {
   const value = guessInput.value.trim();
+  clearFeedbackClasses();
+
   if (!value || isNaN(value)) {
     feedback.textContent = "Please type a number next time.";
+    feedback.classList.add("feedback-error");
     return;
   }
 
   const userGuess = parseInt(value, 10);
   guesses++;
+  guessCount.textContent = guesses;
+
+  previousGuesses.push(userGuess);
+  previousGuessesEl.textContent = previousGuesses.join(", ");
 
   if (userGuess === randomNumber) {
-    feedback.textContent = "You got it!";
-    guessCount.textContent = `You got it in ${guesses} guesses.`;
-    // Optional: disable further guesses or reset game
+    feedback.textContent = "You got it! 🎉";
+    feedback.classList.add("feedback-correct");
+    hint.textContent = `The number was ${randomNumber}. Great job!`;
+
+    // End round
+    guessInput.disabled = true;
+    guessBtn.disabled = true;
+    playAgainBtn.classList.remove("hidden");
   } else if (userGuess > randomNumber) {
-    feedback.textContent = "You were above the number!";
-    guessCount.textContent = `Guesses so far: ${guesses}`;
+    feedback.textContent = "Too high!";
+    feedback.classList.add("feedback-high");
+    hint.textContent = "Try a smaller number.";
   } else {
-    feedback.textContent = "You were below the number!";
-    guessCount.textContent = `Guesses so far: ${guesses}`;
+    feedback.textContent = "Too low!";
+    feedback.classList.add("feedback-low");
+    hint.textContent = "Try a bigger number.";
   }
 
   guessInput.value = "";
   guessInput.focus();
+}
+
+/* Event listeners */
+
+// Start game button
+startBtn.addEventListener("click", startGame);
+
+// Guess button
+guessBtn.addEventListener("click", handleGuess);
+
+// "Play again" button
+playAgainBtn.addEventListener("click", startGame);
+
+// Press Enter to submit a guess when in play area
+guessInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !guessBtn.disabled) {
+    handleGuess();
+  }
 });
